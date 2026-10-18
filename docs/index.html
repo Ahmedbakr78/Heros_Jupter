@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Heros NoteBook — open, read, run, edit and export .ipynb notebooks in your browser. Real Python via Pyodide sandbox, builder studio, variable inspector. 100% local, free and unlimited.">
+<title>Heros NoteBook — Jupyter Studio for Your Browser</title>
+<link rel="icon" type="image/png" href="assets/icons/icon32.png">
+<style>
+:root{
+  --bg:#0e1014; --surface:#191d24; --surface-2:#21262e; --surface-3:#2a3038;
+  --border:#2a303a; --text:#e7eaf0; --text-2:#b0b9c6; --muted:#79839a;
+  --accent:#4c8dff; --accent-h:#6ba0ff; --accent-soft:rgba(76,141,255,.15);
+  --py:#FFD43B; --green:#22c55e;
+  --pill:999px; --font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+header.top .wrap{display:flex;align-items:center;gap:12px;padding:12px 20px}
+header.top img{width:34px;height:34px;border-radius:11px}
+header.top b{font-size:17px;letter-spacing:-.3px}
+header.top b span{color:var(--accent)}
+header.top nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+header.top nav a{color:var(--text-2);text-decoration:none;font-size:13px;font-weight:600;padding:8px 12px;border-radius:var(--pill)}
+header.top nav a:hover{background:var(--surface-2);color:var(--text)}
+.hero{text-align:center;padding:72px 20px 40px}
+.hero .badge{display:inline-flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--pill);padding:6px 14px;font-size:12.5px;color:var(--text-2);font-weight:600}
+.hero .badge i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+.hero h1{font-size:clamp(30px,5vw,52px);letter-spacing:-1px;line-height:1.15;margin:22px 0 12px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);font-size:16px;max-width:680px;margin:0 auto 28px}
+.btnrow{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:14px;font-weight:700;font-size:14px;text-decoration:none;border:1px solid transparent}
+.btn.accent{background:var(--accent);color:#fff}
+.btn.accent:hover{background:var(--accent-h)}
+.btn.ghost{background:transparent;border-color:var(--border);color:var(--text)}
+.btn.ghost:hover{background:var(--surface-2)}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:14px 22px;text-align:center;min-width:130px}
+.stat b{display:block;font-size:24px;letter-spacing:-.5px}
+.stat span{font-size:12px;color:var(--muted);font-weight:600}
+section{padding:36px 0}
+h2{font-size:24px;letter-spacing:-.4px;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px}
+.card h3{margin:0 0 6px;font-size:15px}
+.card p{margin:0;font-size:13px;color:var(--muted)}
+.card .n{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:12px;border-radius:99px;padding:2px 10px;margin-bottom:8px}
+.card .n.py{background:rgba(255,212,59,.14);color:var(--py)}
+.steps{display:grid;gap:10px;counter-reset:step}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 18px;font-size:14px}
+.step b{color:var(--accent)}
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;background:var(--surface-3);border:1px solid var(--border);border-radius:7px;padding:1px 7px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px;overflow-x:auto;font-size:13px}
+.kbd{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px}
+.kbd div{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;font-size:13px;color:var(--text-2)}
+.kbd b{color:var(--text);font-family:ui-monospace,monospace;font-size:12.5px}
+.faq details{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 16px;margin-bottom:8px}
+.faq summary{cursor:pointer;font-weight:700}
+footer{border-top:1px solid var(--border);padding:28px 0 60px;color:var(--muted);font-size:13px;text-align:center}
+footer a{color:var(--accent);text-decoration:none}
+@media (max-width:640px){.hero{padding:48px 16px 28px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <img src="assets/icons/icon128.png" alt="Heros NoteBook logo">
+  <b>Heros<span>NoteBook</span></b>
+  <nav><a href="#features">Features</a><a href="#kernel">Kernel</a><a href="#install">Install</a><a href="#faq">FAQ</a><a href="https://github.com/Ahmedbakr78/Heros_Jupter">GitHub</a></nav>
+</div></header>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="badge"><i></i> v1.1.0 · 160 tools · 100% local · free forever</span>
+    <h1>Jupyter notebooks,<br><span>inside your browser.</span></h1>
+    <p>Heros NoteBook opens any <code>.ipynb</code> file and runs real Python in a sandboxed Pyodide kernel — plus a full studio: builder charts, variable inspector, package manager, plot gallery, search everything, export everywhere. No server. No account. No tracking.</p>
+    <div class="btnrow">
+      <a class="btn accent" href="https://github.com/Ahmedbakr78/Heros_Jupter/releases/latest">Download v1.1.0</a>
+      <a class="btn ghost" href="#install">Install in 30 seconds</a>
+      <a class="btn ghost" href="https://github.com/Ahmedbakr78/Heros_Jupter">Star on GitHub</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>160</b><span>free tools</span></div>
+      <div class="stat"><b>Python</b><span>Pyodide WASM kernel</span></div>
+      <div class="stat"><b>0</b><span>servers · trackers</span></div>
+      <div class="stat"><b>11</b><span>export paths</span></div>
+      <div class="stat"><b>∞</b><span>notebooks · cells · runs</span></div>
+    </div>
+  </div>
+
+  <section id="features">
+    <h2>Everything, unlimited</h2>
+    <p class="sub">Press <code>F</code> inside the app for the full runnable list.</p>
+    <div class="grid">
+      <div class="card"><span class="n py">Run</span><h3>Real Python, zero install</h3><p>Pyodide (CPython → WebAssembly) in an isolated sandbox. <code>Shift+Enter</code> runs. <code>!pip install</code> works. matplotlib figures captured inline.</p></div>
+      <div class="card"><span class="n">Open</span><h3>Any .ipynb, anywhere</h3><p>File picker, drag &amp; drop, URL, <code>?nb=</code> deep link, paste JSON, demo notebook, 25 recents with resume.</p></div>
+      <div class="card"><span class="n">Edit</span><h3>Studio-grade editing</h3><p>Add/split/duplicate/reorder cells, convert types, live markdown preview, 50-step undo/redo.</p></div>
+      <div class="card"><span class="n">Search</span><h3>Find everything</h3><p>Code, markdown and outputs in one index. Case, whole-word, jump to error, outline of headings + defs.</p></div>
+      <div class="card"><span class="n py">Data</span><h3>Kernel power panes</h3><p>Variable inspector with DataFrame shapes, package manager, plot gallery, run history with timings.</p></div>
+      <div class="card"><span class="n py">Build</span><h3>Chart &amp; table wizards</h3><p>Snippet gallery, table builder, chart wizard (line/bar/scatter/hist), CSV + JSON loaders — tap to insert.</p></div>
+      <div class="card"><span class="n">Export</span><h3>11 ways out</h3><p><code>.ipynb</code> · <code>.py</code> · <code>.md</code> · <code>.html</code> · <code>.txt</code> · print/PDF · backup JSON · cell links · plot PNGs · stats · copy.</p></div>
+      <div class="card"><span class="n">Design</span><h3>Studio-white + true dark</h3><p>Heros design system: floating cards, pill tabs, 6 accents, night/sepia/dim tints, focus mode, reduce motion.</p></div>
+      <div class="card"><span class="n">Tools</span><h3>Study + productivity</h3><p>Highlights/underlines/strikes, bookmarks, stopwatch, counters, todos, habits and streaks — all local.</p></div>
+    </div>
+  </section>
+
+  <section id="kernel">
+    <h2>How the kernel works</h2>
+    <p class="sub">Pyodide boots once inside a Manifest&nbsp;V3 sandboxed iframe — full Python power without weakening the extension's CSP.</p>
+    <pre>you → app.js ──postMessage──▶ sandbox (Pyodide WASM)
+                ◀──outputs / timings / variables──
+sandbox ──one-time──▶ CDN (kernel download only)</pre>
+  </section>
+
+  <section id="install">
+    <h2>Install in 30 seconds</h2>
+    <p class="sub">Chrome, Edge, Brave, Opera, Arc, Vivaldi, Yandex — any Chromium browser.</p>
+    <div class="steps">
+      <div class="step"><b>1.</b> Download the release ZIP (or <code>git clone https://github.com/Ahmedbakr78/Heros_Jupter.git</code>).</div>
+      <div class="step"><b>2.</b> Open <code>chrome://extensions</code> (Edge: <code>edge://extensions</code>) and enable <b>Developer mode</b>.</div>
+      <div class="step"><b>3.</b> <b>Load unpacked</b> → select the <code>Heros_Jupter</code> folder (contains <code>manifest.json</code>).</div>
+      <div class="step"><b>4.</b> Pin Heros NoteBook, click the icon — drop an <code>.ipynb</code> or load the demo.</div>
+      <div class="step"><b>5.</b> Optional: <b>Details → Allow access to file URLs</b> for <code>file://</code> auto-open.</div>
+    </div>
+    <p class="sub" style="margin-top:14px">Updating? Press <b>Reload ↻</b> on the extension card — it must read <code>v1.1.0</code>.</p>
+  </section>
+
+  <section id="keys">
+    <h2>Keyboard-first</h2>
+    <p class="sub">The fastest way to work. <code>Ctrl+K</code> opens the command palette for everything else.</p>
+    <div class="kbd">
+      <div><b>Shift+Enter</b> — run cell + next</div>
+      <div><b>Ctrl+Enter</b> — run cell, stay</div>
+      <div><b>J / K</b> — next / previous cell</div>
+      <div><b>A / B / M / Y</b> — add above / below / markdown / code</div>
+      <div><b>Ctrl+F</b> — search code + markdown + outputs</div>
+      <div><b>Ctrl+S / Ctrl+E</b> — save / export</div>
+      <div><b>T</b> — cycle theme · <b>F</b> — features</div>
+      <div><b>H / U / S</b> — highlight / underline / strike</div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Questions</h2>
+    <p class="sub">Full 30-question list in the README.</p>
+    <details><summary>Is it really free?</summary><p>Yes — MIT licensed, unlimited notebooks, cells, runs and exports. No accounts, no quotas.</p></details>
+    <details><summary>Do I need Python or Jupyter installed?</summary><p>No. Python runs inside the browser as WebAssembly via Pyodide. There is no server component.</p></details>
+    <details><summary>Do my notebooks upload anywhere?</summary><p>Never. Files are read in memory; only recents/marks/preferences touch <code>chrome.storage.local</code> on your machine.</p></details>
+    <details><summary>Does pip install work?</summary><p>Yes — pure-Python wheels and the Pyodide scientific set (numpy, pandas, matplotlib, …) install from any cell or the package manager.</p></details>
+    <details><summary>Can I export back to Jupyter?</summary><p>Yes — <code>.ipynb</code> round-trips with outputs; <code>.py</code>, <code>.md</code>, <code>.html</code>, <code>.txt</code> and print/PDF cover everything else.</p></details>
+  </section>
+
+  <footer>
+    Heros NoteBook v1.1.0 · MIT · by <a href="https://github.com/Ahmedbakr78">Ahmedbakr78</a> ·
+    <a href="https://www.linkedin.com/in/ahmed-abo-bakr-1b2466288/?isSelfProfile=true">LinkedIn</a> ·
+    <a href="https://github.com/Ahmedbakr78/Heros_Jupter">Repo</a> ·
+    <a href="https://github.com/Ahmedbakr78/Heros_Jupter/releases/latest">Releases</a> ·
+    Sibling of Heros PDF &amp; Heros Markdown · Pyodide © Mozilla (MPL-2.0)
+  </footer>
+</div>
+</body>
+</html>

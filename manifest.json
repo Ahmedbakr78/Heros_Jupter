@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Heros NoteBook",
+  "version": "1.1.0",
+  "description": "Heros NoteBook — fast, private, beautiful Jupyter viewer + runner in your browser. Open, read, run, edit, search, export .ipynb. Dark + Light, mobile-ready, 100% local view, free and unlimited.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Heros NoteBook",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "contextMenus",
+    "webNavigation",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';",
+    "sandbox": "sandbox allow-scripts allow-modals; script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; connect-src https: data: blob:; img-src https: data: blob:; style-src 'self' 'unsafe-inline' https:;"
+  },
+  "sandbox": {
+    "pages": [
+      "sandbox.html"
+    ]
+  },
+  "author": "Ahmed ABOBAKR",
+  "homepage_url": "https://github.com/Ahmedbakr78/Heros_Jupter"
+}
